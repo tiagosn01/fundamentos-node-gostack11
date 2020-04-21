@@ -15,6 +15,10 @@ class CreateTransactionService {
   }
 
   public execute({ title, value, type }: Request): Transaction {
+    if (type !== 'income' && type !== 'outcome') {
+      throw Error('Invalid transaction type.');
+    }
+
     const { total } = this.transactionsRepository.getBalance();
 
     if (type === 'outcome' && total < value) {
